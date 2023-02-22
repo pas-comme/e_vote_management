@@ -83,8 +83,8 @@ class _MainScreen extends State<MainPage>{
         ),
         body: [
             const HomePage(),
-            Insertion(),
-            Liste()
+            const Insertion(),
+            const Liste()
           ][_currentPage],
       );
   }
