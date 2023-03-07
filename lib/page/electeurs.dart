@@ -31,6 +31,8 @@ class ElecteurPage extends State<Electeurs>{
     // TODO: implement setState
     super.setState(fn);
   }
+
+  // méthode permettant d'ajouter un nouveau electeur
   newElecteur() async{
     await FlutterBarcodeScanner.scanBarcode('#eeeeee', 'Cancel', true, ScanMode.QR).then((value) => retour = value);
     if(retour!=""){
@@ -66,10 +68,13 @@ class ElecteurPage extends State<Electeurs>{
             child: BlocBuilder<ElecteurBloc, ElecteurState>(
 
                 builder: (context, state) {
-                  if(state is ElecteurInitial){
-                    return const Center( child: CircularProgressIndicator());
+                  if(state is ElecteurInitial){  // ce qui s'affiche pendant le chargement des données
+                    return Center( child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: const [Text("LOADING.......", style: TextStyle(fontSize: 48, fontWeight:FontWeight.bold ),),
+                          CircularProgressIndicator()]));
                   }
-                  else if(state is ElecteurLoadedState){
+                  else if(state is ElecteurLoadedState){ // ce qui s'affiche quand les données sont chargées
                     List<Personne> personneLIST = state.electeurs;
                     return  ListView.builder(
                         itemCount: personneLIST.length,
@@ -97,13 +102,13 @@ class ElecteurPage extends State<Electeurs>{
                           );
                         });
                   }
-                  else if(state is ElecteurErrorState){
+                  else if(state is ElecteurErrorState){ // ce qui s'affiche en cas d'erreur
                     return  Center(child: Text(state.erreur),);
                   }
-                  else if (state is ElecteurVideState){
+                  else if (state is ElecteurVideState){ // ce qui s'affiche si les données sont vides
                     return const Center(child: Text("aucun électeur inscrit pour le moment"),);
                   }
-                  else{
+                  else{ // ce qui s'affiche dans tous les autres cas
                     return const Center(child: Text("aucun électeur inscrit pour le moment"),);
                   }
                 }

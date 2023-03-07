@@ -20,10 +20,10 @@ class _ListeScreen extends State<Liste>{
   final int _currentIndex1 = 0;
   final int _currentIndex2 = 0;
 
-
+ //méthode récupérant la liste des éléctions non-arvhivées
   Future<List<Element>> getLIST()async{
-    var reponse = await http.get(Uri.parse("http://localhost/API/polling/pollings.php?voting=0" ));
-    //var reponse = await http.get(Uri.parse("http://10.42.0.1/API/polling/pollings.php?voting=0" ));
+    //var reponse = await http.get(Uri.parse("http://localhost/API/polling/pollings.php?voting=0" ));
+    var reponse = await http.get(Uri.parse("http://10.42.0.1/API/polling/pollings.php?voting=0" ));
     liste.clear();
     var temp = json.decode(reponse.body);
     for(Map i in temp){
@@ -32,6 +32,7 @@ class _ListeScreen extends State<Liste>{
     return liste;
   }
 
+  // fonction permetant de afficher une fenetre de dialogue après click sur une élection
   void electionOptions(int? id, String titre,) async{
     showDialog(
       context: context,
@@ -169,6 +170,7 @@ class _ListeScreen extends State<Liste>{
     );
   }
 }
+// classe servant de structure de données pour les élections
 class Element {
   int? id;
   String? nom;
@@ -176,6 +178,7 @@ class Element {
   String? description;
   Element({this.id,  this.domaine,  this.nom, this.description});
 
+  // méthode de convertion de jsnon en dart
   Element.fromJson(dynamic json){
     id =  json['id'];
     nom = json['nom'];

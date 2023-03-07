@@ -1,4 +1,4 @@
-
+// Classe servant de structure de données pour l'information d'une personne
 class Personne{
   int? id;
   String? anarana;
@@ -13,7 +13,7 @@ class Personne{
   Personne(this.id, this.anarana, this.fanampiny, this.sexe, this.adiresy, this.phone, this.asa, this.daty,
       this.image
       );
-
+  // méthode de convertion de json en dart
   Personne.fromJson(Map<String, dynamic> json){
     id = json['id'];
     anarana = json['anarana'];
@@ -30,7 +30,7 @@ class Personne{
     asa = json['asa'];
     image = json['image'];
   }
-
+//List de chaine de caractère servant de variable temporaire
   static final List<String> _base64Char = [
   "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z",
   "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z",
@@ -38,6 +38,7 @@ class Personne{
   "+", "/",
   ];
 
+  //méthode convertissant le l'image sous forme de chaine de caractère en une image affichable
   static List<int> base64Decoder(String str) {
 
   str = str.replaceAll("\n", "");
@@ -85,66 +86,6 @@ class Personne{
   }
   }
   return list;
-  }
-
-  static String base64Encoder(List<int> list) {
-    StringBuffer sb = StringBuffer();
-    int remainder = list.length % 3;
-    int size = list.length - remainder;
-
-    for (int i = 0; i < size; i += 3) {
-    int code1 = list[i];
-    int code2 = list[i + 1];
-    int code3 = list[i + 2];
-
-    int encode1 = (code1 >> 2) & 0x3F;
-
-    int encode2 = ((code1 & 0x03) << 4) + ((code2 >> 4) & 0x0F);
-
-    int encode3 = ((code2 & 0x0F) << 2) + ((code3 >> 6) & 0x03);
-
-    int encode4 = code3 & 0x3F;
-
-    String char1 = _base64Char[encode1];
-    String char2 = _base64Char[encode2];
-    String char3 = _base64Char[encode3];
-    String char4 = _base64Char[encode4];
-
-    sb.write(char1);
-    sb.write(char2);
-    sb.write(char3);
-    sb.write(char4);
-    }
-
-    if (remainder != 0) {
-
-    int code1 = list[size];
-    int code2 = 0;
-    if (remainder == 2) {
-    code2 = list[size + 1];
-    }
-
-    int encode1 = (code1 >> 2) & 0x3F;
-    int encode2 = ((code1 & 0x03) << 4) + ((code2 >> 4) & 0x0F);
-    String char1 = _base64Char[encode1];
-    String char2 = _base64Char[encode2];
-
-    int encode3;
-    String char3 = "=";
-    if (remainder == 2) {
-    encode3 = (code2 & 0x0F) << 2;
-    char3 = _base64Char[encode3];
-    }
-
-    String char4 = "=";
-
-    sb.write(char1);
-    sb.write(char2);
-    sb.write(char3);
-    sb.write(char4);
-    }
-
-    return sb.toString();
   }
 
 }

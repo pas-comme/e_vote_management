@@ -37,6 +37,8 @@ class _MainScreen extends State<MainPage>{
     // TODO: implement setState
     super.setState(fn);
   }
+
+  // fonction gestion des écrans en fonctions des index de buttons clické en bas de l'écran
   setCurrentIndex(int index){
     setState(() {
       _currentIndex = index;

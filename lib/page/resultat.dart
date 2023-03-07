@@ -24,6 +24,8 @@ class ResultatPage extends State<Resultat>{
   String retour = "";
 
   ResultatPage(this.id, this.nom_election);
+
+  // écran d'affichage des résultats
   @override
   Widget build(BuildContext context) {
     final avatarSize = MediaQuery.of(context).size.width * 0.2;
@@ -39,24 +41,27 @@ class ResultatPage extends State<Resultat>{
             create: (context) => ResultatBloc(ResultatRepository(id))..add(GetResultat(id)),
             child: BlocBuilder<ResultatBloc, ResultatState>(
                 builder: (context, state) {
-                  if(state is ResultatInitial){
-                    return const Center( child: CircularProgressIndicator());
+                  if(state is ResultatInitial){ // ce qui s'affiche pendant le chargement des données
+                    return Center( child:  Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: const [Text("LOADING.......", style: TextStyle(fontSize: 48, fontWeight:FontWeight.bold ),),
+                          CircularProgressIndicator()]));
                   }
-                  else if(state is ResultatVideState){
+                  else if(state is ResultatVideState){ // ce qui s'affiche si les données sont vides
                     return const Center(child: Text("aucun candidat inscrit pour le moment"));
                   }
-                  else if(state is ResultatLoadedState){
+                  else if(state is ResultatLoadedState){ // ce qui s'affiche quand les données sont chargées
                     List<Personne> personneLIST = state.infos;
                     List<dynamic> resultatVOTE = state.resultat;
                     List<Candidat> candidats = state.candidats;
                     return Column(
                         children: [
-                          Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                          // en-tete
+                          Padding(padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 2),
                               child: Card(
                                   color: Colors.grey,
                                   child: Padding(
-                                    padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
+                                    padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 2),
                                     child: SizedBox(
                                       width: MediaQuery.of(context).size.width,
                                       child: Column(
@@ -72,8 +77,9 @@ class ResultatPage extends State<Resultat>{
                                                   Padding(
                                                       padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
                                                       child: CircularProgressIndicator()),
-                                                  Text("Mais on peut déjà afficher les statistiques suivantes",
-                                                      style: TextStyle(fontSize: 20, fontWeight:FontWeight.bold, color: Colors.white,  )),]),
+                                                  ]),
+                                            resultatVOTE[1] == "fin" ? const Text("") : const Text("Mais on peut déjà afficher les statistiques suivantes",
+                                                style: TextStyle(fontSize: 20, fontWeight:FontWeight.bold, color: Colors.white,  )) ,
                                             Text("taux de participation : ${(resultatVOTE[2] / resultatVOTE[0] * 100).toStringAsFixed(2)}%      soit : ${resultatVOTE[2]} / ${resultatVOTE[0]}",
                                               style: const TextStyle(fontSize: 20, fontWeight:FontWeight.bold, color: Colors.white ), textAlign: TextAlign.start,),
 
@@ -82,7 +88,9 @@ class ResultatPage extends State<Resultat>{
                                   )
                               )
                           ),
+                          // introduction
                           const Center(child: Text("Voici les sufrages de chaque candidat", style: TextStyle(fontSize: 22, fontWeight:FontWeight.bold))),
+                          // corps du résultat
                           Expanded(
                             child: ListView.builder(
 
@@ -119,11 +127,11 @@ class ResultatPage extends State<Resultat>{
                         ]
                     );
                   }
-                  else if(state is ResultatErrorState){
+                  else if(state is ResultatErrorState){// ce qui s'affiche en cas d'erreur
                     return  Center(child: Text(state.erreur),);
                   }
-                  else{
-                    return const Center(child: Text("aucun candidat inscrit pour le moment oooooo..."),);
+                  else{ // ce qui s'affiche dans les autres cas
+                    return const Center(child: Text("quelque chose ne marche pas..."),);
                   }
                 }
 

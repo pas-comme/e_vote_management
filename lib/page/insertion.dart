@@ -16,9 +16,8 @@ class _InsertionScreen  extends State<Insertion>{
   TextEditingController domaineTEC = TextEditingController();
   TextEditingController desctiptionTEC = TextEditingController();
 
+  // fonction permettant de valider les informations dans le champs de texte avant enregistrement
   validationForm() async {
-
-
     if(nomTEC.text.isEmpty){
       ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text("ERREUR : le champ nom de l'élection est vide",
@@ -44,7 +43,7 @@ class _InsertionScreen  extends State<Insertion>{
       Uri url = Uri.parse("http://10.42.0.1/API/polling/newPolling.php");
       var reponse = await http.post(url, body: data);
       if(reponse.statusCode == 200){
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("éléction créée",
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("élection créée",
             textAlign: TextAlign.center), shape: BeveledRectangleBorder(borderRadius:BorderRadius.all(Radius.circular(3)))));
         nomTEC.clear();
         desctiptionTEC.clear();
@@ -57,6 +56,7 @@ class _InsertionScreen  extends State<Insertion>{
     }
   }
 
+  //écran de création d'élection
   @override
   Widget build(BuildContext context) {
     return  Container(
@@ -65,17 +65,16 @@ class _InsertionScreen  extends State<Insertion>{
         key: formKey,
         child: Center(
           child: Column(
-
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               TextField(
                 decoration: const InputDecoration(
                     border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(15)) ),
                     floatingLabelAlignment : FloatingLabelAlignment.center ,
-                    label: Text('nom de l\'éléction', textAlign: TextAlign.center),
+                    label: Text('nom de l\'élection', textAlign: TextAlign.center),
                     labelStyle: TextStyle(),
                     alignLabelWithHint: true,
-                    hintText: "saisissez le nom de l'éléction",
+                    hintText: "saisissez le nom de l'élection",
                     icon: Icon(Icons.info_rounded, color: Colors.blue, size: 32,)),
                 keyboardType: TextInputType.text,
                 controller: nomTEC,
@@ -92,9 +91,9 @@ class _InsertionScreen  extends State<Insertion>{
                     floatingLabelAlignment : FloatingLabelAlignment.center ,
                     border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(15))),
                     alignLabelWithHint: true,
-                    label: Text('domaine de l\'éléction'),
+                    label: Text('domaine de l\'élection'),
                     icon: Icon(Icons.dashboard, color: Colors.blue, size: 32,),
-                    hintText: "saisissez le domaine de l'éléction" ),
+                    hintText: "saisissez le domaine de l'élection" ),
                 keyboardType: TextInputType.text,
 
               ),
@@ -106,9 +105,9 @@ class _InsertionScreen  extends State<Insertion>{
                 decoration: const InputDecoration(
                   floatingLabelAlignment : FloatingLabelAlignment.center ,
                     border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(15))),
-                    label: Text('description de l\'éléction'),
+                    label: Text('description de l\'élection'),
                     icon: Icon(Icons.description, color: Colors.blue, size: 32,),
-                    hintText: "saisissez le decription de l'éléction",
+                    hintText: "saisissez le decription de l'élection",
                     isDense: true,
 
                 ),
@@ -122,7 +121,7 @@ class _InsertionScreen  extends State<Insertion>{
                   padding: const EdgeInsets.fromLTRB(50, 15, 50, 15),
                 ),
                 onPressed: validationForm,
-                child: const Text("créer l'éléction"),
+                child: const Text("créer l'élection"),
               )
             ],
           ),
