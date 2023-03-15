@@ -88,10 +88,8 @@ class ResultatRepository{
     return prs.map((e) => Personne.fromJson(e)).toList();
   }
   Future<List<dynamic>>  getResultat()async{
-    var reponse = await http.get(Uri.parse("http://10.42.0.1/API/polling/resultat.php"));
-    //var reponse = await http.get(Uri.parse("http://localhost/API/polling/resultat.php"));
-  print(reponse.body);
-
+    var reponse = await http.get(Uri.parse("http://10.42.0.1/API/polling/resultat.php?id=$id_election"));
+    //var reponse = await http.get(Uri.parse("http://localhost/API/polling/resultat.php?id=$id_election"));
    return json.decode(reponse.body) as List<dynamic>;
   }
 

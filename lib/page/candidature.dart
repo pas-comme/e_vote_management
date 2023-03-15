@@ -25,7 +25,14 @@ class CandidaturePage extends State<Candidature>{
   String? nom_election;
   String retour = "";
 
+
+
   CandidaturePage(this.id, this.nom_election);
+  @override
+  void setState(VoidCallback fn) {
+    // TODO: implement setState
+    super.setState(fn);
+  }
   newCandidat() async{
     await FlutterBarcodeScanner.scanBarcode('#ff6666', 'Cancel', true, ScanMode.QR).then((value) => retour = value);
     if(retour!=""){
@@ -35,6 +42,7 @@ class CandidaturePage extends State<Candidature>{
       Uri url = Uri.parse("http://10.42.0.1/API/polling/newCandidat.php?");
       var reponse = await http.post(url, body: data);
       if(reponse.statusCode == 200){
+
         ScaffoldMessenger.of(context).showSnackBar( SnackBar(content: Text(reponse.body,
             textAlign: TextAlign.center), shape: const BeveledRectangleBorder(borderRadius:BorderRadius.all(Radius.circular(3)))));
       }
@@ -47,6 +55,7 @@ class CandidaturePage extends State<Candidature>{
 
   @override
   Widget build(BuildContext context) {
+    final avatarSize = MediaQuery.of(context).size.width * 0.2;
     return MultiBlocProvider(
         providers: [
           BlocProvider<CandidatBloc>(create:(BuildContext context) => CandidatBloc(CandidatRepository(id)),)],
@@ -58,6 +67,7 @@ class CandidaturePage extends State<Candidature>{
           body : BlocProvider(
             create: (context) => CandidatBloc(CandidatRepository(id))..add(GetALlCandidat(id)),
             child: BlocBuilder<CandidatBloc, CandidatState>(
+                //bloc: blocTEMP,
                 builder: (context, state) {
                   if(state is CandidatInitial){
                     return const Center( child: CircularProgressIndicator());
@@ -71,11 +81,20 @@ class CandidaturePage extends State<Candidature>{
                         itemCount: personneLIST.length,
                         itemBuilder: (context, index) {
                           return Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                            padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 7),
                             child: Card(
                               color: Theme.of(context).primaryColor,
                               child: ListTile(
-                                  leading: CircleAvatar(backgroundImage : MemoryImage( Uint8List.fromList(Personne.base64Decoder(personneLIST[index].image)))),
+                                  contentPadding: const EdgeInsets.symmetric(vertical: 0, horizontal: 0),
+                                  horizontalTitleGap: -avatarSize / 14,
+                                  leading: Row(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      mainAxisSize: MainAxisSize.min,
+                                    children: [CircleAvatar(
+                                        radius: avatarSize / 2 ,
+                                        foregroundImage : MemoryImage( Uint8List.fromList(Personne.base64Decoder(personneLIST[index].image)))),
+                                  ]),
                                   title: Text("${personneLIST[index].anarana} ${personneLIST[index].fanampiny} "),
                                   subtitle: Text("AGE : ${personneLIST[index].daty}       SEXE : ${personneLIST[index].sexe.toString()} \n"
                                       "PROFESSION : ${personneLIST[index].asa}      ADRESSE : ${personneLIST[index].adiresy}      CONTACT : ${personneLIST[index].phone}",)
@@ -102,7 +121,11 @@ class CandidaturePage extends State<Candidature>{
                 padding: const EdgeInsets.fromLTRB(50, 15, 50, 15),
                 elevation: 5,
               ),
-              onPressed: newCandidat,
+              onPressed : () {
+                newCandidat();
+                var route = MaterialPageRoute(builder: (BuildContext context)=>Candidature(id, nom_election));
+                Navigator.of(context).replace(oldRoute: route, newRoute: route);
+            },
               child: const Text("ajouter un nouveau candidat"),
             ),
           ),

@@ -1,6 +1,7 @@
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 
 import '../Repository/Personne.dart';
 import '../Repository/Repository.dart';
@@ -13,8 +14,16 @@ class ResultatBloc extends Bloc<ResultatEvent, ResultatState> {
   ResultatBloc(this.resultatRepository) : super(ResultatInitial()) {
     on<GetResultat>((event, emit) async {
       emit(ResultatInitial());
+
+
+      final infos = await ResultatRepository(event.id).getCandidat();
+      final candidats = await ResultatRepository(event.id).get();
+      final resulats = await ResultatRepository(event.id).getResultat();
+      emit(ResultatLoadedState(infos, resulats, candidats));
+
       if(resultatRepository.getCandidat() == []){
         emit(ResultatVideState("d"));
+        print("vide");
       }
       else {
         try {
@@ -26,6 +35,7 @@ class ResultatBloc extends Bloc<ResultatEvent, ResultatState> {
         catch (e) {
           if( e is FormatException){
             emit(ResultatVideState("erreur"));
+            print(e.message);
           }else {
             emit(ResultatErrorState(e.toString()));
           }

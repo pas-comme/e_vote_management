@@ -32,4 +32,5 @@ class CandidatBloc extends Bloc<CandidatEvent, CandidatState> {
 
     });
   }
+
 }

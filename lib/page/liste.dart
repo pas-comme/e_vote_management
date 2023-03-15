@@ -22,8 +22,8 @@ class _ListeScreen extends State<Liste>{
 
 
   Future<List<Element>> getLIST()async{
-    //var reponse = await http.get(Uri.parse("http://localhost/API/polling/pollings.php" ));
-    var reponse = await http.get(Uri.parse("http://10.42.0.1/API/polling/pollings.php" ));
+    var reponse = await http.get(Uri.parse("http://localhost/API/polling/pollings.php?voting=0" ));
+    //var reponse = await http.get(Uri.parse("http://10.42.0.1/API/polling/pollings.php?voting=0" ));
     liste.clear();
     var temp = json.decode(reponse.body);
     for(Map i in temp){

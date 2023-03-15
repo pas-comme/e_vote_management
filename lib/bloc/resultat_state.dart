@@ -1,5 +1,5 @@
 part of 'resultat_bloc.dart';
-
+@immutable
 abstract class ResultatState extends Equatable {
   const ResultatState();
 }

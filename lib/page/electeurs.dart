@@ -26,6 +26,11 @@ class ElecteurPage extends State<Electeurs>{
 
   ElecteurPage(this.id_election, this.nom_election);
 
+  @override
+  void setState(VoidCallback fn) {
+    // TODO: implement setState
+    super.setState(fn);
+  }
   newElecteur() async{
     await FlutterBarcodeScanner.scanBarcode('#eeeeee', 'Cancel', true, ScanMode.QR).then((value) => retour = value);
     if(retour!=""){
@@ -43,9 +48,11 @@ class ElecteurPage extends State<Electeurs>{
             textAlign: TextAlign.center), shape: const BeveledRectangleBorder(borderRadius:BorderRadius.all(Radius.circular(3)))));
       }
     }
+    context.read<ElecteurBloc>().add(GetAllElecteur(id_election));
   }
   @override
   Widget build(BuildContext context) {
+    final avatarSize = MediaQuery.of(context).size.width * 0.2;
     return MultiBlocProvider(
         providers: [
           BlocProvider<ElecteurBloc>(create:(BuildContext context) => ElecteurBloc(ElecteurRepository(id_election)),)],
@@ -57,22 +64,31 @@ class ElecteurPage extends State<Electeurs>{
           body : BlocProvider(
             create: (context) => ElecteurBloc(ElecteurRepository(id_election))..add(GetAllElecteur(id_election)),
             child: BlocBuilder<ElecteurBloc, ElecteurState>(
+
                 builder: (context, state) {
                   if(state is ElecteurInitial){
                     return const Center( child: CircularProgressIndicator());
                   }
                   else if(state is ElecteurLoadedState){
                     List<Personne> personneLIST = state.electeurs;
-                    print("s : ${personneLIST.length}");
                     return  ListView.builder(
                         itemCount: personneLIST.length,
                         itemBuilder: (context, index) {
                           return Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                            padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 7),
                             child: Card(
                               color: Theme.of(context).primaryColor,
                               child: ListTile(
-                                  leading: CircleAvatar(backgroundImage : MemoryImage( Uint8List.fromList(Personne.base64Decoder(personneLIST[index].image)))),
+                                  contentPadding: const EdgeInsets.symmetric(vertical: 0, horizontal: 0),
+                                  horizontalTitleGap: -avatarSize / 14,
+                                  leading: Row(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                    CircleAvatar(
+                                        radius: avatarSize / 2 ,
+                                        foregroundImage : MemoryImage( Uint8List.fromList(Personne.base64Decoder(personneLIST[index].image))))]),
                                   title: Text("${personneLIST[index].anarana} ${personneLIST[index].fanampiny} "),
                                   subtitle: Text("AGE : ${personneLIST[index].daty}       SEXE : ${personneLIST[index].sexe.toString()} \n"
                                       "PROFESSION : ${personneLIST[index].asa}      ADRESSE : ${personneLIST[index].adiresy}      CONTACT : ${personneLIST[index].phone}",)
@@ -108,5 +124,4 @@ class ElecteurPage extends State<Electeurs>{
           ),
         ));
   }
-
 }
