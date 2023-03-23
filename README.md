@@ -1,16 +1,13 @@
 # e_vote_management
 
-A new Flutter project.
+Cette repository contient le code source d'un projet pedagogique d'application mobile qui réalisé par :
+          - RAMANDIMBISON Imahalimanana Pacôme, étudiant, 4ème année en Télécommunication à l'ESPA Vontovorona
+          et
+          - RANDRIANARIVELO Fandresena Adrienne, étudiante, 4ème année en Télécommunication à l'ESPA Vontovorona
+tous les 2 suivant le parcours Ingéneurie des Radiocommunication
 
-## Getting Started
+Le projet est une application mobile de gestion numérique des élections à distance et il est associé à un autre projet qui une application de vote éléctronique à distance.
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+À noter que l'application ne marche pas sans une connexion avec un serveur de base de données local (notre serveur local).
+Pour des informations supplémentaire ou pour tester l'application veuillez contacter les responsables via l'addresse : imahalimanana@gmail.com
+ou via contact téléphonique : +261 34 64 112 15 (Pacôme) ou +261 34 98 911 02(Fandresena)
